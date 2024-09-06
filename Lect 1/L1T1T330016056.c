@@ -9,7 +9,7 @@
 #include <stdio.h>
 int main()
 {
-    // printf("I am a programmer\n");
+    printf("I am a programmer\n");
     printf("My name is Bohan YANG\n");
     printf("My student ID is 2330016056\n");
     return 0;
