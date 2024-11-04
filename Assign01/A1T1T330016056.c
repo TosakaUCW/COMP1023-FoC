@@ -11,13 +11,16 @@ int main() {
     char a, b;
     scanf("%c %c", &a, &b);
     
+    // convert
     if ('a' <= a && a <= 'z') {
         a -= 32;
     }
+    // convert
     if ('a' <= b && b <= 'z') {
         b -= 32;
     }
     
+    // check valid
     if (a < 'A' || a > 'Z' || b < 'A' || b > 'Z') {
         printf("Input invalid.\n");
         return 0;
@@ -29,6 +32,7 @@ int main() {
         b = t;
     }
     
+    // print ans
     printf("The difference is %d\n", b - a);
     
     return 0;
