@@ -30,11 +30,11 @@ int main() {
     
     // invalid
     if (m <= 0) {
-        puts("Warning! value of m is invalid!");
+        puts("Warning! Input of m is invalid!");
         return 0;
     }
     if (n < 1) {
-        puts("Warning! value of n is invalid!");
+        puts("Warning! Input of n is invalid!");
         return 0;
     }
     
