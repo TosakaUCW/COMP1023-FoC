@@ -8,6 +8,6 @@
 #define PASSWORD_LENGTH 50
 
 int load_accounts(char usernames[][USERNAME_LENGTH], char passwords[][PASSWORD_LENGTH]);
-int authenticate();
+const char* authenticate();
 
 #endif // LOGIN_MODULE_H

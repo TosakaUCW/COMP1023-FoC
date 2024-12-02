@@ -20,7 +20,7 @@ int load_accounts(char usernames[][USERNAME_LENGTH], char passwords[][PASSWORD_L
     return count;
 }
 
-int authenticate() {
+const char* authenticate() {
     char usernames[MAX_USERS][USERNAME_LENGTH];
     char passwords[MAX_USERS][PASSWORD_LENGTH];
 
@@ -40,7 +40,7 @@ int authenticate() {
             if (strcmp(input_username, usernames[i]) == 0 &&
                 strcmp(input_password, passwords[i]) == 0) {
                 puts("Login successful!");
-                return 1;
+                return input_username;
             }
         }
         puts("Invalid account name or password!");
@@ -48,5 +48,5 @@ int authenticate() {
     }
 
     puts("You have failed three times!");
-    return 0;
+    return NULL;
 }
