@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "login_module.h"
 #include "date_selection.h"
+#include "timeslot_booking.h"
 
 int main() {
     // 1. Login
@@ -19,6 +20,17 @@ int main() {
     }
 
     printf("You selected: %d\n", date_choice);
+    
+    puts("------------------------------");
+    
+    // 3 - 4. Timeslot Booking
+    int timeslot_choice = select_timeslot(date_choice == 1); // If today pass 1，else pass 0
+
+    if (timeslot_choice == 9) {
+        printf("Exiting the system.\n");
+    } else {
+        printf("You selected timeslot: %d\n", timeslot_choice);
+    }
     
     puts("------------------------------");
     
