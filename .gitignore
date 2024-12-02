@@ -60,3 +60,7 @@ dkms.conf
 .DS_Store
 
 .vscode/
+
+Project/C*.txt
+Project/*.o
+/Midterm
