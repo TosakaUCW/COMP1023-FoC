@@ -23,9 +23,7 @@ void get_dates(char dates[3][11]) {
 }
 
 // Display menu (for date selection) and return choice
-int select_date() {
-    char dates[3][11];
-    get_dates(dates);
+int select_date(char dates[3][11]) {
 
     int choice = 0;
     

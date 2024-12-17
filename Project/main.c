@@ -15,8 +15,10 @@ int main() {
 
     puts("------------------------------");
     
+    char dates[3][11];
+    get_dates(dates);
     Classroom classrooms[MAX_CLASSROOMS];
-    int classroom_count = load_classrooms(classrooms, MAX_CLASSROOMS);
+    int classroom_count = load_classrooms(classrooms, MAX_CLASSROOMS, dates);
     if (classroom_count == 0) {
         return 0;
     }
@@ -24,7 +26,7 @@ int main() {
     while (1) {
         
         // 2. Date Selection
-        int date_choice = select_date();
+        int date_choice = select_date(dates);
 
         if (date_choice == 4) {
             printf("Exiting the system.\n");
