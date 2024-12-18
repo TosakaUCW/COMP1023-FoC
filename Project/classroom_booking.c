@@ -3,23 +3,39 @@
 #include "classroom_booking.h"
 
 // Initialize Classroom File
-void initialize_classroom_file(const char *classroom_name, char dates[3][11]) {
+void initialize_classroom_file(Classroom *room) {
     char filename[20];
-    sprintf(filename, "%s.txt", classroom_name);
+    sprintf(filename, "%s.txt", room->name);
 
     FILE *file = fopen(filename, "r");
     char buffer[256];
     
-    if (file == NULL || (fgets(buffer, sizeof(buffer), file) && !strstr(buffer, dates[0]))) {
+    if (file == NULL || (fgets(buffer, sizeof(buffer), file) && !strstr(buffer, room->dates[0]))) {
+        
         file = fopen(filename, "w");
-        for (int day = 0; day < 3; day++) {
-            fprintf(file, "Date: Day %d %s\n", day + 1, dates[day]);
-            for (int i = 9; i <= 16; i++) {
-
-                const char *meridian = i < 12 ? "am" : "pm";
-
-                fprintf(file, "%d. %02d:00 %s - %02d:50 %s: Available                \n",
-                        i - 8, i, meridian, i, meridian);
+        for (int i = 0; i < 3; i++) {
+            
+            for (int j = 0; j < 8; j++) {
+                // room->book_status[i][j] = "Available";
+                // fprintf(room->book_status[i][j], "%s", "Available");
+                // const char *source = "Available";
+                // strcpy(room->book_status[i][j], source);
+                snprintf(room->book_status[i][j],
+                        sizeof(room->book_status[i][j]),
+                        "Available");
+                fprintf(file, "%s %s %s\n", 
+                        room->dates[i], 
+                        room->timeslots[i][j], 
+                        room->book_status[i][j]);
+            }
+        }
+    } else {
+        fclose(file);
+        file = fopen(filename, "r");
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 8; j++) {
+                fscanf(file, "%*s%*s%s", room->book_status[i][j]);
             }
         }
     }
@@ -37,7 +53,25 @@ int load_classrooms(Classroom classrooms[], int max_classrooms, char dates[3][11
 
     int count = 0;
     while (fscanf(file, "%s %d", classrooms[count].name, &classrooms[count].capacity) != EOF) {
-        initialize_classroom_file(classrooms[count].name, dates);
+        
+        // classrooms[count].dates = dates;
+        for (int i = 0; i < 3; i++) {
+           strcpy(classrooms[count].dates[i], dates[i]);
+        }
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 9; j <= 16; j++) {
+
+                const char *meridian = j < 12 ? "am" : "pm";
+
+                snprintf(classrooms[count].timeslots[i][j - 9], 
+                        sizeof(classrooms[count].timeslots[i][j - 9]),
+                        "%02d:00%s-%02d:50%s",
+                        j, meridian, j, meridian);
+            }
+        }
+        
+        initialize_classroom_file(&classrooms[count]);
         count++;
         if (count >= max_classrooms) break;
     }
@@ -47,41 +81,35 @@ int load_classrooms(Classroom classrooms[], int max_classrooms, char dates[3][11
 }
 
 // Check and Book Classroom
-int check_and_book_classroom(const char *classroom_name, int day_index, int timeslot_index, const char *user_name) {
+int check_and_book_classroom(Classroom *room, int day_index, int timeslot_index, const char *user_name) {
+    // printf("%s %s\n", room->name, room->book_status[day_index - 1][timeslot_index - 1]);
+    if (strstr(room->book_status[day_index - 1][timeslot_index - 1], "Available") == NULL) return 0; 
+    
+    // printf("%d %d\n", day_index, timeslot_index);
+    // printf("changed: %s", room->book_status[day_index - 1][timeslot_index - 1]);
+    
+    strcpy(room->book_status[day_index - 1][timeslot_index - 1], user_name);
+    
+    // printf(" to: %s\n", room->book_status[day_index - 1][timeslot_index - 1]);
+    
     char filename[20];
-    sprintf(filename, "%s.txt", classroom_name);
+    sprintf(filename, "%s.txt", room->name);
 
-    FILE *file = fopen(filename, "r+");
+    FILE *file = fopen(filename, "r");
     FILE *newfile = fopen("temp.txt", "w");
     
     if (file == NULL) {
-        printf("Error: Unable to open file for %s\n", classroom_name);
+        printf("Error: Unable to open file for %s\n", room->name);
         return 0;
     }
-
-    char buffer[256];
-    int current_day = 0, current_slot = -1;
-    int isFind = 0;
-
-    while (fgets(buffer, sizeof(buffer), file)) {
-        if (sscanf(buffer, "Date: Day %d", &current_day) == 1) {
-            current_slot = -1;
+    
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 8; j++) {
+                fprintf(newfile, "%s %s %s\n", 
+                        room->dates[i], 
+                        room->timeslots[i][j], 
+                        room->book_status[i][j]);
         }
-
-        if (current_day == day_index) {
-            current_slot++;
-        }
-        
-        if (current_day == day_index && current_slot == timeslot_index) {
-            if (strstr(buffer, "Available")) {
-                fprintf(newfile, "%.24s", buffer);
-                fprintf(newfile, "Booked by %s\n", user_name);
-                isFind = 1;
-                continue;
-            }
-        }
-        
-        fputs(buffer, newfile);
     }
 
     fclose(file);
@@ -90,5 +118,5 @@ int check_and_book_classroom(const char *classroom_name, int day_index, int time
     remove(filename);
     rename("temp.txt", filename);
     
-    return isFind;
+    return 1;
 }

@@ -58,7 +58,8 @@ int main() {
         int booked = 0;
         for (int i = 0; i < classroom_count; i++) {
             if (classrooms[i].capacity >= required_size) {
-                if (check_and_book_classroom(classrooms[i].name, date_choice, timeslot_choice, username)) {
+                // printf("checked %s\n", classrooms[i].name);
+                if (check_and_book_classroom(&classrooms[i], date_choice, timeslot_choice, username)) {
                     printf("Room %s is booked successfully!\n", classrooms[i].name);
                     booked = 1;
                     break;
