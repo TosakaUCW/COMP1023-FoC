@@ -26,7 +26,7 @@ const char* authenticate() {
 
     int account_count = load_accounts(usernames, passwords);
 
-    char input_username[USERNAME_LENGTH];
+    static char input_username[USERNAME_LENGTH];
     char input_password[PASSWORD_LENGTH];
     int attempt = 0;
 
