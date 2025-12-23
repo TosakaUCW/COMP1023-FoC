@@ -1,22 +1,6 @@
 # COMP1023-FoC
 
-## Course Information
-
-COMP1023: Foundations of C Programming
-
-Section 1003 (Dr. Donald Chen, Zixiang Xian, Jiayi NING)
-
-Instructor: Dr. Donald Donglong CHEN
-
-> PS: 
-> 
-> 东龙老师真的很好！！有 Donglong 选 Donglong！！！
->
-> TA Xian 老师也很好，消息秒回，解答了很多问题，感谢！
-
-Time: 24 FALL
-
-BNU-HKBU United International College
+24 FALL
 
 ## Scores
 
